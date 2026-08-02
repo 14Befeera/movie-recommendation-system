@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>MovieMatch | AI Movie Recommendations</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+<div class="background-glow glow-one"></div>
+<div class="background-glow glow-two"></div>
+
+
+<header class="navbar">
+
+    <div class="logo">
+        🎬 <span>Movie</span>Match
+    </div>
+
+    <div class="nav-badge">
+        AI RECOMMENDER
+    </div>
+
+</header>
+
+
+<main class="container">
+
+
+    <!-- HERO SECTION -->
+
+    <section class="hero">
+
+        <div class="badge">
+            ✨ MACHINE LEARNING POWERED
+        </div>
+
+        <h1>
+            Find Your Next
+            <span>Favorite Movie</span>
+        </h1>
+
+        <p>
+            Select a movie you love and discover five movies
+            with similar genres using our intelligent
+            recommendation engine.
+        </p>
+
+    </section>
+
+
+    <!-- SEARCH CARD -->
+
+    <section class="search-card">
+
+        <div class="search-header">
+
+            <div class="search-icon">
+                🔎
+            </div>
+
+            <div>
+
+                <h2>
+                    Discover Similar Movies
+                </h2>
+
+                <p>
+                    Choose a movie from our collection
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form method="POST">
+
+            <div class="input-wrapper">
+
+                <select name="movie"
+                        required>
+
+                    <option value="">
+                        Select a movie...
+                    </option>
+
+                    {% for movie in movies %}
+
+                    <option value="{{ movie }}"
+                        {% if movie == selected_movie %}
+                            selected
+                        {% endif %}>
+
+                        {{ movie }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <button type="submit">
+
+                <span>✨</span>
+
+                Get Recommendations
+
+                <span>→</span>
+
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- RESULTS -->
+
+    {% if recommendations %}
+
+    <section class="results">
+
+        <div class="results-header">
+
+            <div>
+
+                <span class="small-title">
+                    YOUR RESULTS
+                </span>
+
+                <h2>
+                    Movies You Might Like 🍿
+                </h2>
+
+                <p>
+                    Based on genre similarity to
+                    <strong>{{ selected_movie }}</strong>
+                </p>
+
+            </div>
+
+            <div class="result-count">
+                TOP 5
+            </div>
+
+        </div>
+
+
+        <div class="movie-grid">
+
+            {% for movie in recommendations %}
+
+            <article class="movie-card">
+
+                <div class="movie-number">
+
+                    {{ "%02d"|format(loop.index) }}
+
+                </div>
+
+
+                <div class="movie-visual">
+
+                    <div class="film-icon">
+                        🎬
+                    </div>
+
+                </div>
+
+
+                <div class="movie-info">
+
+                    <div class="recommendation-label">
+
+                        #{{ loop.index }}
+                        RECOMMENDATION
+
+                    </div>
+
+
+                    <h3>
+                        {{ movie.title }}
+                    </h3>
+
+
+                    <p class="genres">
+
+                        {{ movie.genres }}
+
+                    </p>
+
+
+                    <div class="match">
+
+                        <div class="match-text">
+
+                            <span>
+                                Similarity
+                            </span>
+
+                            <strong>
+                                {{ movie.score }}%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="progress">
+
+                            <div class="progress-bar"
+                                 style="width: {{ movie.score }}%;">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+
+    <!-- HOW IT WORKS -->
+
+    <section class="how-section">
+
+        <div class="section-heading">
+
+            <span>
+                HOW IT WORKS
+            </span>
+
+            <h2>
+                Smart Recommendations
+            </h2>
+
+        </div>
+
+
+        <div class="steps">
+
+
+            <div class="step">
+
+                <div class="step-icon">
+                    01
+                </div>
+
+                <h3>
+                    Select
+                </h3>
+
+                <p>
+                    Choose your favorite movie
+                    from the collection.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-icon">
+                    02
+                </div>
+
+                <h3>
+                    Analyze
+                </h3>
+
+                <p>
+                    Movie genres are converted
+                    into numerical features.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-icon">
+                    03
+                </div>
+
+                <h3>
+                    Compare
+                </h3>
+
+                <p>
+                    Cosine similarity compares
+                    movies based on genres.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-icon">
+                    04
+                </div>
+
+                <h3>
+                    Recommend
+                </h3>
+
+                <p>
+                    The five most similar movies
+                    are displayed.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<footer>
+
+    <div class="footer-content">
+
+        <div class="logo">
+            🎬 MovieMatch
+        </div>
+
+        <p>
+            Content-Based Movie Recommendation System
+        </p>
+
+        <span>
+            Built with Python • Flask • Scikit-learn
+        </span>
+
+    </div>
+
+</footer>
+
+
+</body>
+
+</html>
